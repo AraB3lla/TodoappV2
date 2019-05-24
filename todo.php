@@ -1,24 +1,22 @@
 <?php
   $errors = "";
 
-  
-// Initialize the session
-// session_start();
+  session_start();
  
-// // Check if the user is logged in, if not then redirect him to login page
-// if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-//     header("location: login.php");
-//     exit;
-// }
- 
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    header("location: login.php");
+    exit;
+}
 //connect to database
   $db = mysqli_connect('localhost', 'root', '', 'todoapp');
 
+ 
   $sql = "CREATE TABLE IF NOT EXISTS tasks(
-      id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-      task VARCHAR(50),
-      duedate VARCHAR(50),
-      active VARCHAR(50))";
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    task VARCHAR(50),
+    duedate VARCHAR(50),
+    active VARCHAR(50))";
 
   if(isset($_POST['submit'])){
       $due = $_POST['duedate'];
@@ -27,32 +25,28 @@
           $errors = "You must input a task.";
       }else{
           mysqli_query($db, "INSERT INTO tasks (task, duedate) VALUES ('$task', '$due')");
-          header('location: index.php');
+          header('location: todo.php');
       }
   }
-
   //delete task
   if(isset($_GET['del_task'])){
       $id = $_GET['del_task'];
       mysqli_query($db, "DELETE FROM tasks WHERE id=$id");
-      header('location: index.php');
+      header('location: todo.php');
   }
   $tasks = mysqli_query($db, "SELECT * FROM tasks ORDER BY task");
-
   if(isset($_POST['update'])){
       $uTask = $_POST['uTask'];
       $uDate = $_POST['uDate'];
       $upT = $_POST['upT'];
-
       if($_POST['update']){
-          $sql = "UPDATE tasks SET task='$uTask', duedate='$uDate' WHERE id='$upT'";
+          $sql = "UPDATE tasks SET task='$uTask', duedate='$uDate' WHERE id=$upT";
           if ($db->query($sql) === TRUE) {
               echo "Record updated successfully <br>";
-              header('location: index.php');
+              header('location: todo.php');
           } else {
               echo "Error: " . $sql . "<br>" . $db->error;
           }
-
       }
     }
 ?>
@@ -71,9 +65,14 @@
 <body>
 <nav class="navbar navbar-dark bg-dark" style="width: 100%;">
     <h1><a class="navbar-brand" style="color:#dc85bd;"> Organise Your Life</a></h1>
+    <p>
+        <a href="reset-password.php" class="btn btn-warning">Reset Your Password</a>
+        <a href="logout.php" class="btn btn-danger">Sign Out of Your Account</a>
+    </p>
  </nav>
 
   <div class="heading">
+        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to your</h1>
   <h2>My To-Do List:</h2>
   </div>
 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
@@ -110,7 +109,7 @@
                   <td class="task"><?php echo $row['task'];?></td>
                   <td class="due"><?php echo $row['duedate'];?></td>
                   <td class="delete">
-                      <a href="index.php?del_task= <?php echo $row['id'];?>">x</a>
+                      <a href="todo.php?del_task= <?php echo $row['id'];?>">x</a>
                   </td>
               </tr>
               <?php }; ?>
