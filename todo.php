@@ -3,11 +3,11 @@
 
   session_start();
  
-// Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-    header("location: login.php");
-    exit;
-}
+//// Check if the user is logged in, if not then redirect him to login page
+//if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+//    header("location: login.php");
+////    exit;
+//}
 //connect to database
   $db = mysqli_connect('localhost', 'root', '', 'login');
 
@@ -21,16 +21,15 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     $returnResult = $db->query($sql);
 
     if($returnResult)
-    {
-        echo " <script> console.log('table Created Successfully'); </script>";
-    }
-    else
-    {
-        echo "<p> Error occurred while creating the table.</p>". mysqli_error($db);
-        echo "<p> Exiting...</p>"; 
-        exit();
-    }
-
+        {
+            echo " <script> console.log('Table Created Successfully'); </script>"; // error checking if Table was created successfully 
+        }
+    else 
+        {
+            echo "<p>Error occurred while creating the table.</p>" .mysqli_error($db);
+            echo "<p>Exiting...</p>";
+            exit();
+        }
 
 
   if(isset($_POST['submit'])){
@@ -49,21 +48,21 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
       mysqli_query($db, "DELETE FROM tasks WHERE id=$id");
       header('location: todo.php');
   }
-//   //TO UPDATE A TASK:
-//   if(isset($_POST['update'])) {
-
-//     $uTask = $_POST['uTask'];
-//     $uDate = $_POST['uDate'];
-//     $upT = $_POST['upT'];
-
-//         $sql = "UPDATE tasks SET tasks='$uTask', duedate='$uDate' WHERE id='$upT'";
-
-//         mysqli_query($db, "UPDATE tasks SET tasks='$uTask', duedate='$uDate' WHERE id='$upT'");
-//         header('location: todo.php');
-
-//     }
-
-
+  $tasks = mysqli_query($db, "SELECT * FROM tasks ORDER BY task");
+  if(isset($_POST['update'])){
+      $uTask = $_POST['uTask'];
+      $uDate = $_POST['uDate'];
+      $upT = $_POST['upT'];
+     
+          $sql = "UPDATE tasks SET task='$uTask', duedate='$uDate' WHERE id='$upT'";
+          if ($db->query($sql) === TRUE) {
+              echo "Record updated successfully <br>";
+              header('location: todo.php');
+          } else {
+              echo "Error: " . $sql . "<br>" . $db->error;
+          }
+      
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -117,8 +116,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
           <tbody>
               <?php
-
-              $tasks = $sql;
               while($row = mysqli_fetch_array($tasks)){ ?>
 
                  <tr>

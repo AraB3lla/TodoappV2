@@ -79,22 +79,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             }
         }
         
-        // Close statement
-        $stmt->close();
+//        // Close statement
+//        $stmt->close();
     }
     
-    // Close connection
-    $mysqli->close();
+//    // Close connection
+//    $mysqli->close();
 }
 ?>
  
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet" type="text/css" href="style1.css">
     <meta charset="UTF-8">
     <title>Login</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="style1.css">
 </head>
 <body>
     <div class="wrapper">
@@ -116,7 +116,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             </div>
             <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
         </form>
-    </div>
     </div>    
 </body>
 </html>

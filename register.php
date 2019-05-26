@@ -38,8 +38,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             }
         }
          
-        // Close statement
-        $stmt->close();
+//        // Close statement
+//        $stmt->close();
     }
     
     // Validate password
@@ -84,12 +84,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             }
         }
          
-        // Close statement
-        $stmt->close();
+//        // Close statement
+//        $stmt->close();
     }
     
-    // Close connection
-    $mysqli->close();
+//    // Close connection
+//    $mysqli->close();
 }
 ?>
  
@@ -98,8 +98,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <head>
     <meta charset="UTF-8">
     <title>Sign Up</title>
-    <link rel="stylesheet" type="text/css" href="style1.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="style1.css">
 </head>
 <body>
     <div class="wrapper">
