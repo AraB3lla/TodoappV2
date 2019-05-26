@@ -9,7 +9,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 //connect to database
-  $db = mysqli_connect('localhost', 'root', '', 'todoapp');
+  $db = mysqli_connect('localhost', 'root', '', 'login');
 
  
   $sql = "CREATE TABLE IF NOT EXISTS tasks(
@@ -17,6 +17,21 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     task VARCHAR(50),
     duedate VARCHAR(50),
     active VARCHAR(50))";
+
+    $returnResult = $db->query($sql);
+
+    if($returnResult)
+    {
+        echo " <script> console.log('table Created Successfully'); </script>";
+    }
+    else
+    {
+        echo "<p> Error occurred while creating the table.</p>". mysqli_error($db);
+        echo "<p> Exiting...</p>"; 
+        exit();
+    }
+
+
 
   if(isset($_POST['submit'])){
       $due = $_POST['duedate'];
@@ -34,21 +49,21 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
       mysqli_query($db, "DELETE FROM tasks WHERE id=$id");
       header('location: todo.php');
   }
-  $tasks = mysqli_query($db, "SELECT * FROM tasks ORDER BY task");
-  if(isset($_POST['update'])){
-      $uTask = $_POST['uTask'];
-      $uDate = $_POST['uDate'];
-      $upT = $_POST['upT'];
-      if($_POST['update']){
-          $sql = "UPDATE tasks SET task='$uTask', duedate='$uDate' WHERE id=$upT";
-          if ($db->query($sql) === TRUE) {
-              echo "Record updated successfully <br>";
-              header('location: todo.php');
-          } else {
-              echo "Error: " . $sql . "<br>" . $db->error;
-          }
-      }
-    }
+//   //TO UPDATE A TASK:
+//   if(isset($_POST['update'])) {
+
+//     $uTask = $_POST['uTask'];
+//     $uDate = $_POST['uDate'];
+//     $upT = $_POST['upT'];
+
+//         $sql = "UPDATE tasks SET tasks='$uTask', duedate='$uDate' WHERE id='$upT'";
+
+//         mysqli_query($db, "UPDATE tasks SET tasks='$uTask', duedate='$uDate' WHERE id='$upT'");
+//         header('location: todo.php');
+
+//     }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -102,6 +117,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
           <tbody>
               <?php
+
+              $tasks = $sql;
               while($row = mysqli_fetch_array($tasks)){ ?>
 
                  <tr>
