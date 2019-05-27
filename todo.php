@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>To-Do List</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -79,31 +79,37 @@
 <body>
 <nav class="navbar navbar-dark bg-dark" style="width: 100%;">
     <h1><a class="navbar-brand" style="color:#dc85bd;"> Organise Your Life</a></h1>
-    <p>
-        <a href="reset-password.php" class="btn btn-warning">Reset Your Password</a>
-        <a href="logout.php" class="btn btn-danger">Sign Out of Your Account</a>
-    </p>
+
+    <div class="dropdown">
+  <button class="dropbtn">Menu</button>
+  <div class="dropdown-content">
+  <a href="reset-password.php"class="button">Reset Your Password</a>
+  <a href="logout.php" class="button" >Sign Out of Your Account</a>
+  </div>
+</div>
+
  </nav>
 
   <div class="heading">
-        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to your</h1>
+        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>.Welcome to your</h1>
   <h2>My To-Do List:</h2>
   </div>
-<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-      <?php if (isset($errors)){ ?>
-          <p><?php echo $errors; ?></p>
-         <?php  }?>
-      <input type="text" name="task" class="task_input" placeholder="Insert task"><br><br>
-      <input type="date" id="start" name="duedate" class="task_input" min="2019-05-21" max="2019-12-31"><br><br>
-      <button type="submit" class="task_btn" name="submit">Add Task</button><br><br>
-      <h4 class="tasks-update">CLICK HERE! To Update Task</h4>
-      <div class="content">
-      <input type="text" name="upT" class="task_input" placeholder="Insert task Number"><br><br>
-      <input type="text" name="uTask" class="task_input"placeholder="Insert Changes"><br><br>
-      <input type="date" id="update" name="uDate" class="task_input" min="2019-05-21" max="2019-12-31"><br><br>
-      <button type="submit" class="task_btn" name="update">update</button>
-      </div>
-      </form>
+  <div class="formBg">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+            <?php if (isset($errors)){ ?>
+                <p><?php echo $errors; ?></p>
+                <?php  }?>
+            <input type="text" name="task" class="task_input" placeholder="Insert task"><br><br>
+            <input type="date" id="start" name="duedate" class="task_input" min="2019-05-21" max="2019-12-31"><br><br>
+            <button type="submit" class="task_btn" name="submit">Add Task</button><br><br>
+            <h4 class="tasks-update">CLICK HERE! To Update Task</h4>
+            <div class="content">
+            <input type="text" name="upT" class="task_input" placeholder="Insert task Number"><br><br>
+            <input type="text" name="uTask" class="task_input"placeholder="Insert Changes"><br><br>
+            <input type="date" id="update" name="uDate" class="task_input" min="2019-05-21" max="2019-12-31"><br><br>
+            <button type="submit" class="task_btn" name="update">update</button>
+            </div>
+            </form>
       <table>
           <thead>
               <tr>
