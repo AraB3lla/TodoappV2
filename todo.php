@@ -2,12 +2,7 @@
   $errors = "";
 
   session_start();
- 
-//// Check if the user is logged in, if not then redirect him to login page
-//if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-//    header("location: login.php");
-////    exit;
-//}
+
 //connect to database
   $db = mysqli_connect('localhost', 'root', '', 'login');
 
@@ -30,15 +25,18 @@
             echo "<p>Exiting...</p>";
             exit();
         }
-
+        $userid = $_SESSION["id"];
+        $username = $_SESSION["username"];
+        mysqli_query($db, "SELECT * FROM tasks WHERE id = $userid");
 
   if(isset($_POST['submit'])){
       $due = $_POST['duedate'];
       $task = $_POST['task'];
+      $userid = $_SESSION["id"];
       if(empty($task)){
           $errors = "You must input a task.";
       }else{
-          mysqli_query($db, "INSERT INTO tasks (task, duedate) VALUES ('$task', '$due')");
+          mysqli_query($db, "INSERT INTO tasks (task, duedate,userid) VALUES ('$task', '$due','$userid')");
           header('location: todo.php');
       }
   }
@@ -48,7 +46,9 @@
       mysqli_query($db, "DELETE FROM tasks WHERE id=$id");
       header('location: todo.php');
   }
-  $tasks = mysqli_query($db, "SELECT * FROM tasks ORDER BY task");
+
+  $tasks = mysqli_query($db, "SELECT * FROM tasks WHERE userid=$userid  ORDER BY task");
+
   if(isset($_POST['update'])){
       $uTask = $_POST['uTask'];
       $uDate = $_POST['uDate'];
@@ -63,6 +63,7 @@
           }
       
     }
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -91,8 +92,8 @@
  </nav>
 
   <div class="heading">
-        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>.Welcome to your</h1>
-  <h2>My To-Do List:</h2>
+        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b> Let's get your day started</h1>
+  <h2>Here's your list of things to do:</h2>
   </div>
   <div class="formBg">
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
